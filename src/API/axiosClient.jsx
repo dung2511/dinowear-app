@@ -1,7 +1,7 @@
 import axios from "axios";
 import queryString from "query-string";
 const axiosClient = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "http://localhost:8080" || "https://" + process.env.URL_API,
   headers: {
     "content-type": "application/json",
   },
