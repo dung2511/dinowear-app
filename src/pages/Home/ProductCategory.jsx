@@ -13,7 +13,7 @@ const ProductCategory = () => {
     fetchData();
   }, []);
   return (
-    <section className="product__category_home mt-16">
+    <section className="product__category_home mt-10 xl:mt-16">
       <div className="container">
         <h2 className="text-center uppercase text-[1.25rem] lg:text-[2rem] font-semibold mb-7">
           Danh mục sản phẩm

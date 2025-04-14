@@ -11,8 +11,6 @@ const OrderManagement = () => {
       const id_user = JSON.parse(localStorage.getItem("id_user"));
       if (id_user) {
         const response = await OrderAPI.getAllOrderByUser(id_user);
-        console.log(response);
-
         setListOrder(response);
       }
     };

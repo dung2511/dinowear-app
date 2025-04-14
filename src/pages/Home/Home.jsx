@@ -16,10 +16,10 @@ const Home = () => {
         description="Khám phá bộ sưu tập thời trang cực chất tại DinoWear! Đa dạng phong cách từ streetwear đến basic, mang đến sự thoải mái và cá tính riêng. Cập nhật xu hướng mới nhất, chất liệu cao cấp, giá cả hợp lý. Shop ngay hôm nay! "
       />
       <BannerHome />
-      <ListBrands />
       <ProductCategory />
       <NewArrivals />
       <ProductSale />
+      <ListBrands />
       <CustomerComment />
       <NewsHome />
       <Policy />

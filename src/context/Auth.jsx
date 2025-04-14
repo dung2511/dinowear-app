@@ -5,13 +5,13 @@ export const AuthContext = createContext();
 
 const AuthContextProvider = (props) => {
   const [jwt, setJWT] = useState();
-  const [user, setUser] = useState();
+  const [id_user, setIdUser] = useState();
   const navigate = useNavigate();
   useEffect(() => {
     localStorage.getItem("jwt") &&
       setJWT(JSON.parse(localStorage.getItem("jwt")));
     localStorage.getItem("user") &&
-      setUser(JSON.parse(localStorage.getItem("user")));
+      setIdUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
   const addLocal = (jwt, user) => {
@@ -19,7 +19,7 @@ const AuthContextProvider = (props) => {
     localStorage.setItem("id_user", JSON.stringify(user));
 
     setJWT(jwt);
-    setUser(user);
+    setIdUser(user);
   };
 
   const logOut = () => {
@@ -27,7 +27,7 @@ const AuthContextProvider = (props) => {
     localStorage.removeItem("user");
 
     setJWT();
-    setUser();
+    setIdUser();
     navigate("/");
   };
 
@@ -35,7 +35,7 @@ const AuthContextProvider = (props) => {
     <AuthContext.Provider
       value={{
         jwt,
-        user,
+        id_user,
         addLocal,
         logOut,
       }}

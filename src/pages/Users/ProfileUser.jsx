@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import SidebarUser from "./Components/SidebarUser";
 import { Box, TextField } from "@mui/material";
@@ -10,8 +10,10 @@ import { addSession } from "../../Redux/Action/ActionSession";
 import UserAPI from "../../API/UserAPI";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../context/Auth";
 
 const ProfileUser = () => {
+  const { jwt, user } = useContext(AuthContext);
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/images/Logo.png";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuHeader from "./MenuHeader";
 import IconCart from "../../components/icons/IconCart";
 import IconUser from "../../components/icons/IconUser";
+import { AuthContext } from "../../context/Auth";
 import { useDispatch, useSelector } from "react-redux";
 import { addSession } from "../../Redux/Action/ActionSession";
 import UserAPI from "../../API/UserAPI";
@@ -16,7 +17,7 @@ const Header = () => {
   }
   const id_user = useSelector((state) => state.Session.idUser);
   const [activeUser, setActiveUser] = useState(false);
-  const [fullname, setFullname] = useState("");
+  const [user, setUser] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,7 +25,7 @@ const Header = () => {
           const rs = await UserAPI.getDetailData(
             JSON.parse(localStorage.getItem("id_user"))
           );
-          setFullname(rs.fullname);
+          setUser(rs);
           setActiveUser(true);
         }
       } catch (error) {
@@ -69,9 +70,10 @@ const Header = () => {
               <Link className="inline-block" to={"/gio-hang"}>
                 <IconCart />
               </Link>
-              {activeUser ? (
+
+              {activeUser && user ? (
                 <Link className="inline-block" to={"/thong-tin-tai-khoan"}>
-                  {fullname}
+                  Xin chào, {user.fullname}
                 </Link>
               ) : (
                 <Link className="inline-block" to={"/dang-nhap"}>
