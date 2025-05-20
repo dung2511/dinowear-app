@@ -57,18 +57,12 @@ const Cart = () => {
     dispatch(action_change_count);
   };
   const handleCheckout = () => {
-    if (localStorage.getItem("id_user")) {
-      if (listCart.length < 1) {
-        toast.error("Vui Lòng Kiểm Tra Lại Giỏ Hàng!", {
-          position: "top-right",
-        });
-      } else {
-        navigate("/checkout");
-      }
-    } else {
-      toast.error("Vui Lòng Kiểm Tra Tình Trạng Đăng Nhập!", {
+    if (listCart.length < 1) {
+      toast.error("Vui Lòng Kiểm Tra Lại Giỏ Hàng!", {
         position: "top-right",
       });
+    } else {
+      navigate("/checkout");
     }
   };
   return (

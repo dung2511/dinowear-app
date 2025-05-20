@@ -16,11 +16,16 @@ import Success from "../pages/Success/Success";
 import OrderManagement from "../pages/Users/OrderManagement";
 import DetailOrder from "../pages/Users/DetailOrder";
 import ShippingAddress from "../pages/Users/ShippingAddress";
+import Introduce from "../pages/Statics/Introduce";
 
 const publicRoutes = [
   {
     path: "/",
     component: Home,
+  },
+  {
+    path: "/gioi-thieu",
+    component: Introduce,
   },
   {
     path: "/tin-tuc",

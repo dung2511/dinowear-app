@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import ChevronRight from "./Icon/ChevronRight";
 import LocationAPI from "../../API/LocationAPI";
 import OrderAPI from "../../API/OrderAPI";
+import { addSession } from "../../Redux/Action/ActionSession";
+import UserAPI from "../../API/UserAPI";
 const Checkout = () => {
   const navigate = useNavigate();
   const [cart, setCart] = useState([]);
@@ -15,11 +17,11 @@ const Checkout = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
-  const [listCity, setListCity] = useState("");
+  const [listCity, setListCity] = useState([]);
   const [district, setDistrict] = useState("");
-  const [listDistrict, setListDistrict] = useState("");
+  const [listDistrict, setListDistrict] = useState([]);
   const [award, setAward] = useState("");
-  const [listAward, setListAward] = useState("");
+  const [listAward, setListAward] = useState([]);
   const [address, setAddress] = useState("");
   const [isCheckedTerms, setIsCheckedTerms] = useState(false);
   const [isCheckedPayment, setIsCheckedPayment] = useState(true);
@@ -61,24 +63,78 @@ const Checkout = () => {
   const count_change = useSelector((state) => state.Count.isLoad);
 
   const dispatch = useDispatch();
+  if (JSON.parse(localStorage.getItem("id_user"))) {
+    const action = addSession(JSON.parse(localStorage.getItem("id_user")));
+    dispatch(action);
+  }
+  const id_user = useSelector((state) => state.Session.idUser);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (id_user) {
+        const rs = await UserAPI.getDetailData(id_user);
+        setFullname(rs.fullname);
+        setEmail(rs.email);
+        setPhone(rs.phone);
+        setCity(rs.city_id);
+        setAddress(rs.address);
+        setTempDistrict(rs.district_id);
+        setTempAward(rs.award_id);
+      }
+    };
+    fetchData();
+  }, [id_user]);
+  const [tempDistrict, setTempDistrict] = useState(null);
+  useEffect(() => {
+    if (tempDistrict && listDistrict.length > 0) {
+      setDistrict(tempDistrict);
+      setTempDistrict(null);
+    }
+  }, [listDistrict]);
+
+  const [tempAward, setTempAward] = useState(null);
+  useEffect(() => {
+    if (tempAward && listAward.length > 0) {
+      setAward(tempAward);
+      setTempAward(null);
+    }
+  }, [listAward]);
   const handleCheckout = async (e) => {
     e.preventDefault();
     const data_carts = JSON.parse(localStorage.getItem("carts"));
+    var data;
+    if (id_user) {
+      data = {
+        id_user: JSON.parse(localStorage.getItem("id_user")),
+        fullname: fullname,
+        phone: phone,
+        email: email,
+        shipping_address: {
+          city_id: city,
+          district_id: district,
+          award_id: award,
+          address: address,
+        },
+        list_product: data_carts,
+        total_price: totalPrice,
+      };
+    } else {
+      data = {
+        guestInfo: {
+          fullname: fullname,
+          phone: phone,
+          email: email,
+        },
+        shipping_address: {
+          city_id: city,
+          district_id: district,
+          award_id: award,
+          address: address,
+        },
+        list_product: data_carts,
+        total_price: totalPrice,
+      };
+    }
 
-    const data = {
-      id_user: JSON.parse(localStorage.getItem("id_user")),
-      fullname: fullname,
-      phone: phone,
-      email: email,
-      shipping_address: {
-        city_id: city,
-        district_id: district,
-        award_id: award,
-        address: address,
-      },
-      list_product: data_carts,
-      total_price: totalPrice,
-    };
     await OrderAPI.post_detail_order(data);
 
     toast.success("Đặt hàng thành công", {
@@ -196,7 +252,6 @@ const Checkout = () => {
                       onChange={(e) => setFullname(e.target.value)}
                     />
                   </div>
-
                   <div>
                     <label
                       htmlFor="email"
@@ -311,7 +366,6 @@ const Checkout = () => {
                         })}
                     </select>
                   </div>
-
                   <div>
                     <label
                       htmlFor="address_company"

@@ -18,29 +18,33 @@ const ItemProduct = (props) => {
         />
       </Link>
       <Link
-        className="text-[1.125rem] font-bold mt-4 block"
+        className="text-[0.8125rem] lg:text-[1.125rem] font-bold mt-4 block"
         to={`/san-pham/${props.data.slug}`}
       >
         <h3>{props.data.name}</h3>
       </Link>
-      <p className="font-bold flex items-center mt-1 text-[1rem]">
+      <p className="font-bold flex items-center mt-1 text-[0.8125rem] lg:text-[1rem]">
         {props.data.sale > 0 ? (
           <>
             <span className="text-[#8B4513]">
-              {formatPrice(
-                props.data.price - (props.data.sale * props.data.price) / 100
-              )}
+              {props.data?.price !== undefined &&
+                formatPrice(
+                  props.data.price - (props.data.sale * props.data.price) / 100,
+                  "₫"
+                )}
             </span>
-            <span className=" text-sm line-through ml-2">
-              {formatPrice(props.data.price)}
+            <span className=" line-through ml-2">
+              {props.data?.price !== undefined &&
+                formatPrice(props.data.price, "₫")}
             </span>
-            <span className="ml-3 font-medium py-1 px-2 text-[#FF3333] rounded-[3.875rem] bg-[rgba(255,51,51,0.1)] text-sm inline-block">
+            <span className="ml-3 hidden font-medium py-1 px-2 text-[#FF3333] rounded-[3.875rem] bg-[rgba(255,51,51,0.1)]  lg:inline-block">
               -{props.data.sale}%
             </span>
           </>
         ) : (
           <span className="text-[#8B4513]">
-            {formatPrice(props.data.price)}
+            {props.data?.price !== undefined &&
+              formatPrice(props.data.price, "₫")}
           </span>
         )}
       </p>

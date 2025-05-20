@@ -10,10 +10,6 @@ const UserAPI = {
     const url = `/api/users/${id}`;
     return axiosClient.get(url);
   },
-  getDetailUser: (query) => {
-    const url = `/api/users/detail/login${query}`;
-    return axiosClient.get(url);
-  },
   registerUser: (data) => {
     const url = `/api/users/create/`;
     return axiosClient.post(url, data);
@@ -21,6 +17,10 @@ const UserAPI = {
   login: (data) => {
     const url = "/api/users/login";
     return axiosClient.post(url, data);
+  },
+  update: (data) => {
+    const url = "/api/users/update";
+    return axiosClient.patch(url, data);
   },
 };
 

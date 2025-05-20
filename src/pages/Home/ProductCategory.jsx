@@ -20,7 +20,6 @@ const ProductCategory = () => {
         </h2>
         <div>
           <Swiper
-            pagination={{ clickable: true }}
             slidesPerView={3}
             spaceBetween={1.2}
             watchSlidesProgress={true}
@@ -47,8 +46,7 @@ const ProductCategory = () => {
                 spaceBetween: 20,
               },
             }}
-            modules={[Pagination]}
-            className="slide-company"
+            className="slide-product-category"
           >
             {listCategory &&
               listCategory.map((item, index) => {

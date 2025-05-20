@@ -11,11 +11,12 @@ export const formatDate = (date) => {
 export const formatDateOrder = (date) => {
     return new Date(date).toLocaleDateString("vi-VN");
 }
-export const formatPrice = (price) => {
+export const formatPrice = (price, unit) => {
+    unit = unit || " VNĐ"
     return new Intl.NumberFormat("vi-VN", {
         style: "decimal",
         decimal: "VND",
-    }).format(price) + " VNĐ"
+    }).format(price) + unit
 }
 export const formatPriceOrder = (price) => {
     return new Intl.NumberFormat("vi-VN", {

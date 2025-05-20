@@ -22,6 +22,7 @@ const navItems = [
   },
 ];
 const SidebarUser = () => {
+  const handleLogout = () => {};
   return (
     <>
       <aside className="lg:w-[17.5rem] sidebar-account bg-[#ffffff] rounded-[0.625rem] fixed lg:static">

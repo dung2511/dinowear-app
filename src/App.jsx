@@ -11,10 +11,12 @@ import DefaultLayout from "./layout/DefaultLayout";
 import { ToastContainer } from "react-toastify";
 import AdminRoutes from "./pages/Admin/AdminRoutes";
 import AuthContextProvider from "./context/Auth";
+import ScrollToTop from "./components/ScrollToTop";
 export default function App() {
   return (
     <Router>
       <AuthContextProvider>
+        <ScrollToTop />
         <Routes>
           {publicRoutes.map((route, index) => {
             const Layout = DefaultLayout;

@@ -1,29 +1,44 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import SidebarUser from "./Components/SidebarUser";
-import { Box, TextField } from "@mui/material";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { addSession } from "../../Redux/Action/ActionSession";
 import UserAPI from "../../API/UserAPI";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { AuthContext } from "../../context/Auth";
 
 const ProfileUser = () => {
-  const { jwt, user } = useContext(AuthContext);
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [birthday, setBirthday] = useState("");
+  const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
-  const handleUpdate = (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
+    const data = {
+      id: id_user,
+      fullname: fullname,
+      email: email,
+      phone: phone,
+      gender: gender,
+    };
+    const response = await UserAPI.update(data);
+    if (response.msg === "Bạn đã cập nhật thành công") {
+      toast.success(response.msg, {
+        position: "top-right",
+      });
+    }
   };
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -36,12 +51,11 @@ const ProfileUser = () => {
     const fetchData = async () => {
       try {
         if (id_user) {
-          const rs = await UserAPI.getDetailData(
-            JSON.parse(localStorage.getItem("id_user"))
-          );
+          const rs = await UserAPI.getDetailData(id_user);
           setFullname(rs.fullname);
           setEmail(rs.email);
           setPhone(rs.phone);
+          setGender(rs.gender);
         }
       } catch (error) {
         if (error.response?.data?.msg === "Không tìm thấy tài khoản") {
@@ -58,7 +72,7 @@ const ProfileUser = () => {
           <SidebarUser />
           <div className="w-full lg:flex-1 lg:pl-6">
             <div className="bg-white px-4 py-6 rounded-[0.625rem]">
-              <form className="form " onSubmit={handleUpdate}>
+              <form className="form ">
                 <p className="text-[1.25rem] text-center font-semibold mb-6">
                   Thông tin tài khoản
                 </p>
@@ -109,23 +123,31 @@ const ProfileUser = () => {
                     </Box>
                   </div>
                   <div className="w-full md:w-1/2 md:px-3 mb-4">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        label="Ngày sinh"
-                        name={"birthday"}
-                        className="w-full"
-                        value={
-                          birthday
-                            ? dayjs(birthday.toDate())
-                            : dayjs(new Date())
-                        }
-                        onChange={(e) => setBirthday(e.date)}
-                      />
-                    </LocalizationProvider>
+                    <Box sx={{ width: 1 }}>
+                      <FormControl fullWidth>
+                        <InputLabel id={`gender-select-label`}>
+                          Giới tính
+                        </InputLabel>
+                        <Select
+                          fullWidth
+                          className="w-full"
+                          labelId={`gender-select-label`}
+                          id="gender-simple-select"
+                          value={gender || ""}
+                          name={"gender"}
+                          onChange={(e) => setGender(e.target.value)}
+                          label={"Giới tính"}
+                        >
+                          <MenuItem value={"Nam"}>Nam</MenuItem>
+                          <MenuItem value={"Nữ"}>Nữ</MenuItem>
+                          <MenuItem value={"Khác"}>Khác</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Box>
                   </div>
                 </div>
                 <div className="flex w-full justify-center mt-4 font-medium">
-                  <button className="btn-17">
+                  <button className="btn-17" onClick={handleUpdate}>
                     <span className="text-container">
                       <span className="text">Lưu thay đổi</span>
                     </span>

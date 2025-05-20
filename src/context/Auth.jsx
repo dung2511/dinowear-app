@@ -4,29 +4,29 @@ import { useNavigate } from "react-router-dom";
 export const AuthContext = createContext();
 
 const AuthContextProvider = (props) => {
-  const [jwt, setJWT] = useState();
+  const [token, setToken] = useState();
   const [id_user, setIdUser] = useState();
   const navigate = useNavigate();
   useEffect(() => {
-    localStorage.getItem("jwt") &&
-      setJWT(JSON.parse(localStorage.getItem("jwt")));
-    localStorage.getItem("user") &&
-      setIdUser(JSON.parse(localStorage.getItem("user")));
+    localStorage.getItem("token") &&
+      setToken(JSON.parse(localStorage.getItem("token")));
+    localStorage.getItem("id_user") &&
+      setIdUser(JSON.parse(localStorage.getItem("id_user")));
   }, []);
 
-  const addLocal = (jwt, user) => {
-    localStorage.setItem("jwt", JSON.stringify(jwt));
-    localStorage.setItem("id_user", JSON.stringify(user));
+  const addLocal = (token, id_user) => {
+    localStorage.setItem("token", JSON.stringify(token));
+    localStorage.setItem("id_user", JSON.stringify(id_user));
 
-    setJWT(jwt);
-    setIdUser(user);
+    setToken(token);
+    setIdUser(id_user);
   };
 
   const logOut = () => {
-    localStorage.removeItem("jwt");
+    localStorage.removeItem("token");
     localStorage.removeItem("user");
 
-    setJWT();
+    setToken();
     setIdUser();
     navigate("/");
   };
@@ -34,7 +34,7 @@ const AuthContextProvider = (props) => {
   return (
     <AuthContext.Provider
       value={{
-        jwt,
+        token,
         id_user,
         addLocal,
         logOut,
