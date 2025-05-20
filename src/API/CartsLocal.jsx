@@ -1,8 +1,10 @@
 const CartsLocal = {
   addProduct: (data) => {
+    if (!localStorage.getItem("carts")) {
+      localStorage.setItem("carts", JSON.stringify([]));
+    }
     //Lấy dữ liệu từ local
     const data_add_cart = data;
-
     //Lấy dữ liệu có sẵn trong state
     const add_cart = JSON.parse(localStorage.getItem("carts") || []) ?? [];
     if (add_cart.length < 1) {
